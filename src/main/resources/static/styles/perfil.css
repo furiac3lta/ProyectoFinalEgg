@@ -1,0 +1,135 @@
+.perfilUsuario{
+/*    margin-top: 20px;*/
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'PT Serif', serif;
+    font-family: 'Raleway', sans-serif;
+}
+
+
+.perfilUsuario .perfilUsuarioCabeza{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(#eb9d2899,transparent);
+/*    margin-top: 20px;*/
+    margin-bottom: 1rem;
+}
+
+.perfilUsuario .perfilUsuarioPortada{
+    display: block;
+    position: relative;
+    width: 90%;
+    height: 17rem;
+    background: linear-gradient(45deg,#fbb21b,#eb9d28bf);
+    border-radius: 0 0 20px 20px;
+}
+
+.perfilUsuario .perfilUsuarioFoto{
+    display: flex;
+    width: 180px;
+    height: 180px;
+    align-items: center;
+    justify-content: center;
+    border: 7px solid #FFFFFF;
+    background-color: #DFE5F2;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(0, 0, 0, .2);
+    position: absolute;
+    bottom: -40px;
+    left: calc(50% - 90px);
+    z-index: 1;
+}
+
+
+.perfilUsuario .perfilUsuarioFoto .img{
+    width: 150px;
+    height: 150px;
+    position:absolute;
+    background: #fff;
+    padding: 5px;
+    border-radius: 50%;
+    bottom: -30%;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.perfilUsuario .perfilUsuarioFoto img{
+ width: 100%;
+ height: 100%;
+ border-radius: 50%;
+ object-fit: cover;
+ max-width: 100%;
+}
+
+.perfilUsuario .perfilUsuarioCuerpo{
+    position: relative;
+    width: 90%;
+}
+.perfilUsuario .perfilUsuarioCuerpo .tituloNombre{
+    display: block;
+    width: 100%;
+    font-size: 1.75em;
+    margin-bottom: 0.5rem;
+    padding: 10px;
+}
+.perfilUsuario .perfilUsuarioCuerpo .texto{
+
+    width: 100%;
+    margin-bottom: 0.5rem;
+    position: center;
+    color: black;
+    font-size: 0.95em;
+
+}
+
+.perfilUsuario .perfilUsuarioFooter,
+.perfilUsuario .perfilUsuarioBio{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1.5rem 1.rem;
+    box-shadow: 0 0 12px rgba(0, 0, 0, .2);
+    background-color: #fff;
+    border-radius: 15px;
+    width: 100%;
+
+}
+
+.perfilUsuario .perfilUsuarioBio{
+    margin-bottom: 1.25rem;
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 4px;
+    padding-bottom: 1px;
+    display: block;
+}
+
+/*.perfilUsuarioFooter ul li{
+    display:table;
+    margin: 0 auto;
+}*/
+
+.perfilUsuario .perfilUsuarioFooter ul{
+    margin-bottom: 1.25rem;
+    padding: 0;
+    margin-top: 20px;
+    margin-inline-start: 10px;
+/*    text-align: center;*/
+}
+
+.perfilUsuario .listaDatos{
+    width: 50%;
+
+}
+
+.perfilUsuario .listaDatos li{
+    padding: 5px 0;
+}
+
+ .perfilUsuario .lista-datos li>.icono {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    vertical-align: middle;
+}

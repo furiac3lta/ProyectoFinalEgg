@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout/layout :: head"></head>
+<body>
+<nav th:replace="/layout/layout :: navbar"></nav>
+<header th:replace="/layout/layout :: header"></header>
+<div class="container-xl">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-8 pb-4" ><h2>Tabla <b>Ordenes Cliente</b></h2></div>
+                    <div class="col-sm-4">
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th> Numero Orden</th>
+                        <th>Detalle</th>
+                        <th>Email Cliente</th>
+                        <th>Email Prestador</th>
+                        <th>Trabajo Activo</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr th:each="orden: ${ordenes}">
+                    <div >
+<!--                  <div th:if="${orden.activo == true}">-->
+                      <td th:text="${orden.id}"></td>
+                      <td th:text="${orden.detalle}"></td>
+                      <td th:text="${orden.emailc}"></td>
+                      <td th:text="${orden.emailp}"></td>
+                      <td th:text="${orden.activo} ? 'Activo' : 'Finalizado'"></td>
+                        <td th:text="${orden.createdAt}"></td>
+                      <td>
+                          <a th:href="@{/views/ordenes/detalle/}+${orden.id}" class="view" title="detalle" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
+                          <a th:href="@{/views/ordenes/eliminar/}+${orden.id}" sec:authorize="hasRole('GUEST')" class="delete" title="eliminar" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                      </td>
+                  </div>
+                </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>  
+</div>
+
+<footer th:replace="/layout/layout :: footer"></footer>
+</body>
+</html>

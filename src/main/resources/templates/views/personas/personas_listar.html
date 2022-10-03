@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout/layout :: head"></head>
+<body>
+<nav th:replace="/layout/layout :: navbar"></nav>
+<header th:replace="/layout/layout :: header"></header>
+<div class="container-xl">
+    <div class="col-sm-8 pb-4" ><h2>Tabla <b>Usuarios</b></h2></div>
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row container">
+                 </div>
+            </div>
+            <div class="form-group container">
+                <div class="col-sm-12 p-2 text-right">
+                    <a th:href="@{/views/personas/listar/(format=pdf)}" class="btn btn-secondary" sec:authorize="hasRole('ADMIN')" >Imprimir</a>
+                </div>
+            </div>
+            <input class="form-control col-md-3 light-table-filter" data-table="order-table" type="text" placeholder="Search..">
+          <div class="pt-5">
+              <table class="table table-striped table-hover table-bordered order-table pb-3" sec:authorize="hasRole('ADMIN')">
+                  <thead>
+                  <tr>
+                      <th>#id</th>
+                      <th>Nombre <i class="fa fa-sort"></i></th>
+                      <th>Apellido</th>
+                      <th>email</th>
+                      <th>telefono <i class="fa fa-sort"></i></th>
+                      <th>oficio</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="persona: ${personas}">
+                      <div>
+                          <td th:text="${persona.id}"></td>
+                          <td th:text="${persona.nombre}"></td>
+                          <td th:text="${persona.apellido}"></td>
+                          <td th:text="${persona.email}"></td>
+                          <td th:text="${persona.telefono}"></td>
+                          <td th:text="${persona.servicio}"></td>
+                          <td th:text="${persona.activo} ? 'Activo' : 'Baja'"></td>
+                          <td>
+                              <a th:href="@{/views/personas/detalle/}+${persona.id}" class="view" title="View" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
+                              <a th:href="@{/modificar/}+${persona.id}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                              <a th:href="@{/views/personas/eliminar/}+${persona.id}" sec:authorize="hasRole('ADMIN')" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                              <a th:href="@{/views/personas/comentarios/}+${persona.id}" class="comentario" title="comentario" data-toggle="tooltip"><i class="material-icons">&#xe975;</i></a>
+                          </td>
+                      </div>
+                  </tr>
+
+                  </tbody>
+              </table>
+          </div>
+            <div class="form-group container">
+                <div class="col-sm-6 p-2">
+                    <a th:href="@{/views/personas/form}" class="btn btn-warning" sec:authorize="hasRole('ADMIN')" >Agregar</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>  
+</div>
+<div>
+
+</div>
+
+    <footer th:replace="/layout/layout :: footer"></footer>
+
+</body>
+</html>

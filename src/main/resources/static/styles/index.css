@@ -1,0 +1,40 @@
+.carousel, .carousel-inner {
+  max-height: 100%;
+  object-fit: scale-down;
+}
+
+.carousel-item {
+  display: block;
+  width: 100%;
+  height: 890px;
+}
+
+.carousel-caption {
+  top: 5%;
+}
+
+.parrafo__carousel {
+  color: black;
+  font-size: 23px;
+}
+.banner1 {
+  filter: blur(6px);
+  background: url(../images/sastre1.jpg);
+  float: left;
+  width: 100%;
+  height: 400px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  text-align: center;
+
+}
+.banner1 h3 {
+  background: rgba(0, 0, 0, 0.1);
+  height: 100%;
+  color: white;
+  font-size: 30px;
+  box-sizing: border-box;
+  padding-top: 10%;
+  font-family: "Lato", sans-serif;
+}

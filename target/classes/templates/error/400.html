@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head">
+
+</head>
+<body>
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container text-center py-3">
+    <div class="panel bg-light">
+        <div class="panel-heading">
+            <h3 class="panel-title text-danger">
+                <span th:text="${error}"></span> - <span th:text="${status}"></span>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <img th:src="@{/images/error.png}" width="627" height="317">
+            <br>
+            <h4></h4>
+            <br>
+            <div class="form-group container">
+                <div class="col-sm-6 p-2 ">
+                    <a class="btn btn-secondary" th:href="@{/}">Ir a inicio</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+</body>

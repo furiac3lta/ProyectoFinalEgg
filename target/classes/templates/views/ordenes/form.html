@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="/layout/layout :: head"></head>
+<body>
+<nav th:replace="/layout/layout :: navbar"></nav>
+<header th:replace="/layout/layout :: header"></header>
+
+
+
+
+<div class="container contenedor">
+  <form th:action="@{/views/ordenes/form/__${persona.id}__/orden}" th:object="${orden}" method="post">
+    <div class="form-group">
+        <h1>Orden de Trabajo</h1>
+      <label class="col-sm-6 col-form-label">Nombre y Apellido Prestador Servicio</label>
+      <div class="col-sm-6">
+        <p th:text="${persona.nombre} + ' ' + ${persona.apellido}"  style="color:red"/></p>
+
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="form-group mt-4">
+        <label class="col-sm-6 col-form-label">Tipo de trabajo</label>
+          <div class="col-sm-6">
+              <p th:text="${persona.servicio}"  style="color:red"/></p>
+
+          </div>
+      </div>
+        <div class="form-group" type="hidden" >
+            <div class="form-group mt-4">
+                <label class="col-sm-6 col-form-label">Email</label>
+                <div class="col-sm-6">
+                    <input th:value="${persona.email}"
+                           class="form-control" disabled ='disabled' style="color:red"/></input>
+                </div>
+            </div>
+        <div class="form-group mt-4">
+            <label class="col-sm-6 col-form-label">Detalle del trabajo</label>
+            <div class="col-sm-6">
+            <input type="text" th:field="*{detalle}" class="form-control" id="detalle" name="detalle" placeholder="Ingrese la tarea a realizar" th:errorclass="'form-control alert-danger'">
+            <small class="form-text text-danger" th:if="${#fields.hasErrors('detalle')}" th:errors="*{detalle}"></small>
+        </div>
+        </div>
+      <label class="col-sm-6 col-form-label">Cliente</label>
+      <div class="col-sm-6">
+          <p sec:authorize="isAuthenticated()">
+              <p sec:authentication="name" style="color:red"></p>
+          </p>
+      </div>
+    <div class="form-group">
+      <div class="col-sm-6 p-2">
+        <input type="submit" value="contratar" class="btn btn-secondary"/>
+      </div>
+    </div>
+
+    <input type="hidden" th:field="*{id}" />
+    </div>
+  </form>
+
+
+</div>
+
+
+<footer th:replace="/layout/layout :: footer"></footer>
+</body>
+</html>

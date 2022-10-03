@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout/layout :: head"></head>
+<body>
+<nav th:replace="/layout/layout :: navbar"></nav>
+<header th:replace="/layout/layout :: header"></header>
+
+<div class="row tarjetas">
+
+    <div th:each="persona: ${personas}" class="container tarjeta1  mt-4 col-lg-6 ml-3" sec:authorize="!hasRole('ADMIN')"
+         th:if="${persona.activo == true and persona.servicio.tipo != 'ninguno'}">
+        <div class="cabeza1">
+            <div class="circle"></div>
+            <div class="img1">
+                <img th:src="@{'/imagen/' + ${persona.foto}}" alt="">
+            </div>
+
+        </div>
+        <div class="description">
+            <h3 th:text="${persona.nombre}+ ' ' + ${persona.apellido}"></h3>
+            <h4 th:text="${persona.servicio}"></h4>
+            <h5 sec:authorize="isAuthenticated()" th:text="${persona.email}"></h5>
+            <h5 sec:authorize="isAuthenticated()" th:text="${persona.telefono}"></h5>
+            <h5 class="h7">
+                <a th:href="@{/views/personas/detalle/}+${persona.id}" class="view" title="View"
+                   data-toggle="tooltip"><i class="fa-solid fa-glasses"></i></a>
+                <!--<a th:href="@{/views/personas/comentarios/}+${persona.id}" class="comentario" title="comentario" data-toggle="tooltip"><i class="fa-solid fa-comment"></i></a>-->
+                <small class="text-muted">Actualizado hace 3 mins</small>
+            </h5>
+        </div>
+    </div>
+</div>
+
+
+<footer th:replace="/layout/layout :: footer"></footer>
+
+</body>
+</html>

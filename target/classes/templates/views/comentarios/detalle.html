@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout/layout :: head"></head>
+<body>
+<nav th:replace="/layout/layout :: navbar"></nav>
+<header th:replace="/layout/layout :: header"></header>
+<div class="row tarjetas" >
+    <div  class="container col-lg-6 mt-4">
+        <div   class="card mb-3" th:if="${comentario.activo == true}" style="max-width: 640px">
+            <div class="row g-0">
+                <div class="col-md-5">
+                    <img class="img-thumbnail" th:src="@{'/imagen/' + ${comentario.imagen}}" />
+                </div>
+                <div class="col-md-7">
+                    <div class="card-body">
+                        <h4 class="card-title">Nombre del Prestador</h4>
+                        <h6 th:text="${comentario.persona.nombre}" class="card-text"></h6>
+                        <h4 class="card-title">Apellido</h4>
+                        <h6 th:text="${comentario.persona.apellido}" class="card-text"></h6>
+                        <h4 class="card-title">Opinion</h4>
+                        <h6 th:text="${comentario.opinion}" class="card-text"></h6>
+                        <h4 class="card-title">Experiencia</h4>
+                        <h6 th:text="${comentario.experiencia}" class="card-text"></h6>
+                        <h4 class="card-title">Autor</h4>
+                        <h6 th:text="${comentario.autor}" class="card-text"></h6>
+                        <p class="card-text">
+                            <small class="text-muted">Actualizado hace 3 mins</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+<footer th:replace="/layout/layout :: footer"></footer>
+</body>
+</html>

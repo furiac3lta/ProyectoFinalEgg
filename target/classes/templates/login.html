@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout/layout :: head"></head>
+<body>
+<nav th:replace="/layout/layout :: navbar"></nav>
+<header th:replace="/layout/layout :: header"></header>
+<div class="formulario">
+    <div class="container col-lg-2 mt-4">
+        <form class="formulario" th:action="@{/logincheck}" method="post">
+            <h3 class="form-signin-heading text-center">Iniciar Sesion</h3>
+            <label for="username" class="sr-only">Usuario</label>
+            <input type="email" name="email" class="form-control" placeholder="Email" required autofocus>
+            <label for="password" class="sr-only">Contraseña</label>
+            <input type="password"  name="password" class="form-control" placeholder="Constraseña" required>
+            <button class="btn btn-sm btn-warning btn-block" type="submit">Ingresar</button>
+        </form>
+    </div>
+</div>
+<footer th:replace="/layout/layout :: footer"></footer>
+</body>
+</html>

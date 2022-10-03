@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout/layout :: head"></head>
+<body>
+<nav th:replace="/layout/layout :: navbar"></nav>
+<header th:replace="/layout/layout :: header"></header>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content rounded-0">
+            <div class="modal-body p-4 px-5">
+
+
+                <div class="main-content text-center">
+
+                    <a href="#" class="close-btn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><span class="icon-close2"></span></span>
+                    </a>
+
+                    <div class="warp-icon mb-4">
+                        <span class="icon-lock2 pt-5" style="color:black; "><i class="fa-solid fa-user-secret"></i></span>
+                    </div>
+                    <form action="#">
+                        <label for="">Para acceder a su perfil haga click en continuar</label>
+                        <p class="mb-4">Ahi ud podra ver su informacion personal y podra editar sus datos, como cambio de password.
+                            Tambien podra cambiar de usuario Guest a usuario tipo User donde podra ofrecer sus servicios!!</p>
+
+                        <div class="d-flex">
+                            <div class="mx-auto">
+                                <a sec:authorize="isAuthenticated()" th:href="@{/perfil/__${persona.id}__}" class="btn btn-secondary">Continuar</a>
+                                <a sec:authorize="isAuthenticated()" th:href="@{/}" class="btn btn-warning">Ir al inicio</a>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:replace="/layout/layout :: footer"></footer>
+<script>
+    $( document ).ready(function() {
+$('#myModal').modal('toggle')
+});
+</script>
+</body>
+</html>

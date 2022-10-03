@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout/layout :: head"></head>
+<body>
+<nav th:replace="/layout/layout :: navbar"></nav>
+<header th:replace="/layout/layout :: header"></header>
+
+
+
+<h1 class="py-5" th:text="${titulo}"></h1>
+<br>
+<div class="container contenedor">
+  <form th:action="@{/views/comentarios/form/}" th:object="${comentario}" method="post">
+
+   <div class="form-group">
+     <label class="col-sm-2 col-form-label">Nombre y Apellido</label>
+     <div class="col-sm-6">
+       <input th:value="${comentario.persona.nombre} + ' ' + ${comentario.persona.apellido}"
+              class="form-control" disabled ='disabled'/>
+     </div>
+   </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 col-form-label">Opinion</label>
+      <div class="col-sm-6">
+        <input type="text" th:field="*{opinion}" class="form-control" th:errorclass="'form-control alert-danger'" />
+        <small class="form-text text-danger" th:if="${#fields.hasErrors('opinion')}" th:errors="*{opinion}"></small>
+      </div>
+      <label class="col-sm-2 col-form-label">Puntaje</label>
+      <div class="col-sm-6">
+        <input type="text" th:field="*{puntaje}" class="form-control" th:errorclass="'form-control alert-danger'" />
+        <small class="form-text text-danger" th:if="${#fields.hasErrors('puntaje')}" th:errors="*{puntaje}"></small>
+      </div>
+      <label class="col-sm-2 col-form-label">Likes</label>
+      <div class="col-sm-6">
+        <input type="text" th:field="*{likes}" class="form-control" th:errorclass="'form-control alert-danger'" />
+        <small class="form-text text-danger" th:if="${#fields.hasErrors('likes')}" th:errors="*{likes}"></small>
+      </div>
+      <label class="col-sm-2 col-form-label">Activo</label>
+      <div class="col-sm-6">
+        <input type="text" th:field="*{activo}" class="form-control" th:errorclass="'form-control alert-danger'" />
+        <small class="form-text text-danger" th:if="${#fields.hasErrors('activo')}" th:errors="*{activo}"></small>
+      </div>
+    <div class="form-group">
+      <div class="col-sm-6 p-2">
+        <input type="submit" value="guardar" class="btn btn-secondary"/>
+      </div>
+    </div>
+
+    <input type="hidden" th:field="*{id}" />
+  </form>
+
+
+</div>
+
+
+<footer th:replace="/layout/layout :: footer"></footer>
+</body>
+</html>

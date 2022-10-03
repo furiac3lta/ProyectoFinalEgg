@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout/layout :: head"></head>
+<body>
+<nav th:replace="/layout/layout :: navbar"></nav>
+<header th:replace="/layout/layout :: header"></header>
+        <div class="tarjetas">
+            <div class="container col-lg-6 mt-4">
+                <div class="card mb-3" style="max-width: 640px">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                             <img th:src="@{'/imagen/' + ${persona.foto}} "
+                             class="img-fluid rounded"
+                             alt=""
+                             />
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 th:text="${persona.nombre}" class="card-title"></h5>
+                                <h5 th:text="${persona.apellido}" class="card-title"></h5>
+                                <h5 th:text="${persona.email}" class="card-text"></h5>
+                                <!-- <button type="button" class="btn btn-primary">Primary</button>-->
+                                <div class="calificacion">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                </div>
+                                <p class="card-text">
+                                    <small class="text-muted" sec:authorize="hasRole('GUEST')">
+                                        <a th:href="@{/modificar_rol/__${persona.id}__}">Cambiar a Usuario</a></small>
+                                </p>
+                                <p class="card-text">
+                                    <small class="text-muted" sec:authorize="hasRole('GUEST')">
+                                        <a th:href="@{/views/ordenes/form/__${persona.id}__/orden}">Contratar</a></small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row">
+                         <div class="col-md-12">
+                             <table class="table table-striped table-hover table-bordered">
+                                 <thead>
+                                 <tr>
+                                     <th>Comentario</th>
+                                     <th>Opinion</th>
+                                     <th>Experiencia</th>
+                                     <th>Imagen</th>
+                                     <th>Autor</th>
+                                 </tr>
+                                 </thead>
+                                 <tbody>
+                                 <tr th:each="comentario: ${comentarios}">
+                                     <td th:text="${comentario.id}"></td>
+                                     <td th:text="${comentario.opinion}"></td>
+                                     <td th:text="${comentario.experiencia}"></td>
+                                     <td><img class="img-thumbnail" th:src="@{'/imagen/' + ${comentario.imagen}}" /></td>
+                                     <td th:text="${comentario.autor}"></td>
+                                 </tr>
+
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div>
+
+                    </div>
+                </div>
+            </div>
+
+        <footer th:replace="/layout/layout :: footer"></footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+
+    </body>
+</html>

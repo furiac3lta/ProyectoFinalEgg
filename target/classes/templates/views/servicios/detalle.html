@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout/layout :: head"></head>
+<body>
+<nav th:replace="/layout/layout :: navbar"></nav>
+<header th:replace="/layout/layout :: header"></header>
+
+<div  class="container col-lg-6 mt-4">
+    <div   class="card mb-3" th:if="${servicio.activo == true}" style="max-width: 540px">
+        <div class="row g-0">
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h4 class="card-title">Nombre Servicio</h4>
+                    <h6 th:text="${servicio.tipo}" class="card-text"></h6>
+                    <h4 class="card-title">Detalle</h4>
+                    <h6 th:text="${servicio.detalle}" class="card-text"></h6>
+                    <p class="card-text">
+                        <small class="text-muted">Actualizado hace 3 mins</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<footer th:replace="/layout/layout :: footer"></footer>
+</body>
+</html>

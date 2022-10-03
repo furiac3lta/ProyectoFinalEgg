@@ -1,0 +1,81 @@
+.tarjeta1{
+    position: relative;
+    width: 300px;
+    height: 515px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: .5s;
+    border-style: solid;
+    border-color: grey;
+    border-width: 0.12px;
+}
+.tarjeta1:hover{
+    box-shadow: 0 5px 15px rgba(247, 174, 25, 1);
+    transform: translateY(-15px);
+}
+
+.tarjeta1 .cabeza1{
+    height: 125px;
+    width: 100%;
+    position: relative;
+}
+
+.tarjeta1 .cabeza1 .circle{
+   position: absolute;
+       width: 300px;
+       height: 300px;
+       border-radius: 50%;
+       background: #fbb21b;
+       bottom: 0;
+       margin-left: -17px;
+
+}
+
+.tarjeta1 .cabeza1 .img1{
+    width: 150px;
+    height: 150px;
+    position:absolute;
+    background: #fff;
+    padding: 5px;
+    border-radius: 50%;
+    bottom: -30%;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.tarjeta1 .cabeza1 .img1 img{
+ width: 100%;
+ height: 100%;
+ border-radius: 50%;
+ object-fit: cover;
+}
+
+.tarjeta1 .description{
+    height: 200px;
+    padding: 70px 20px 20px 20px;
+    text-align: center;
+}
+
+
+.tarjeta1 .description p{
+    margin-top: 0px;
+    font-size: 15px;
+}
+
+.tarjeta1 .rectangulo{
+  position: absolute;
+      width: 329px;
+      height: 50px;
+      background: #fbb21b;
+      bottom: 0;
+      margin-left: -15px;
+}
+.h7 {
+    font-size: 1.25rem;
+    padding-top: 80px;
+}
+
+.estrellita:hover{
+    color:#fbb21b;
+}

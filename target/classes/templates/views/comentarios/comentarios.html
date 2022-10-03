@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout/layout :: head"></head>
+<body>
+<nav th:replace="/layout/layout :: navbar"></nav>
+<header th:replace="/layout/layout :: header"></header>
+<div class="container-xl">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-8 pb-4" ><h2>Tabla <b>Comentarios</b></h2></div>
+                    <div class="col-sm-4">
+                    </div>
+
+                </div>
+                <div class="text-right">
+                    <input class="form-control col-md-3 light-table-filter" data-table="order-table" type="text" placeholder="Search..">
+                </div>
+            </div>
+         <div class="pt-5">
+             <table class="table table-striped table-hover table-bordered order-table">
+                 <thead>
+                 <tr>
+                     <th>#id</th>
+                     <th>Usuario Comentado</th>
+                     <th>servicio</th>
+                     <th>opinion</th>
+                     <th>experiencia</th>
+                     <th>autor</th>
+                     <th>Acciones</th>
+                 </tr>
+                 </thead>
+                 <tbody>
+                 <tr th:each="comentario: ${comentarios}">
+                     <div th:if="${comentario.activo == true}">
+                         <td th:text="${comentario.id}"></td>
+                         <td th:text="${comentario.persona.nombre}+ ' ' + ${comentario.persona.apellido}"></td>
+                         <td th:text="${comentario.persona.servicio.tipo}"></td>
+                         <td th:text="${comentario.opinion}"></td>
+                         <td th:text="${comentario.experiencia}"></td>
+                         <td th:text="${comentario.autor}"></td>
+
+                         <td>
+                             <a th:href="@{/views/comentarios/detalle/}+${comentario.id}" class="view" title="View" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
+                             <a th:href="@{/views/comentarios/eliminar/}+${comentario.id}" sec:authorize="hasRole('ADMIN')" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                         </td>
+                     </div>
+                 </tr>
+
+                 </tbody>
+             </table>
+         </div>
+
+        </div>
+    </div>  
+</div>
+<div>
+</div>
+
+<footer th:replace="/layout/layout :: footer"></footer>
+</body>
+</html>

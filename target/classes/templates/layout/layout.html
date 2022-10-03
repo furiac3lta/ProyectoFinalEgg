@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+    <title th:fragment="title">ArreglaYa</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta content="Free HTML Templates" name="keywords"/>
+    <meta content="Free HTML Templates" name="description"/>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
+    <!-- Animate css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com"/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap"
+            rel="stylesheet"
+    />
+    <!-- Bootstrap CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+            rel="stylesheet"
+    />
+    <!-- Materialize -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+
+    <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto"
+    />
+
+    <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+<!--    Modal styles-->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,600&display=swap" rel="stylesheet">
+
+    <!--Sweet Alert -->
+    <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="" th:href="@{/styles/theme.css}" rel="stylesheet"/>
+    <link href="" th:href="@{/styles/form.css}" rel="stylesheet"/>
+    <link href="" th:href="@{/styles/cards.css}" rel="stylesheet"/>
+    <link href="" th:href="@{/styles/index.css}" rel="stylesheet"/>
+    <link href="" th:href="@{/styles/modal.css}" rel="stylesheet"/>
+    <link href="" th:href="@{/styles/style.css}" rel="stylesheet"/>
+    <link href="" th:href="@{/styles/perfil.css}" rel="stylesheet"/>
+    <link href="" th:href="@{/styles/tarjeta1.css}" rel="stylesheet"/>
+
+
+    <!-- archivo js estático-->
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/7de6ab665e.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="" th:src="@{/js/main.js}"></script>
+    <script src="" th:src="@{/js/login.js}"></script>
+    <script src="" th:src="@{/js/servicios.js}"></script>
+
+</head>
+<body>
+<nav th:fragment="navbar">
+    <div class="container-fluid p-0">
+        <nav
+                class="navbar navbar-expand-lg bg-white navbar-light py-3 py-lg-0 px-lg-5"
+        >
+            <a href="index.html" class="navbar-brand ml-lg-3">
+                <h1 class="m-0 text-uppercase text-primary ">
+                    <i class="fa-solid fa-gear"></i>
+                    Arregla Ya
+                </h1>
+            </a>
+            <button
+                    type="button"
+                    class="navbar-toggler"
+                    data-toggle="collapse"
+                    data-target="#navbarCollapse"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div
+                    class="collapse navbar-collapse justify-content-between px-lg-3"
+                    id="navbarCollapse"
+            >
+                <div class="navbar-nav mx-auto py-0">
+                    <a href="/" class="nav-item nav-link active">Inicio</a>
+                    <a sec:authorize="hasRole('USER')" href="/views/servicios/listar" class="nav-item nav-link">Servicios</a>
+                    <a sec:authorize="hasRole('GUEST')" href="/views/servicios/listar" class="nav-item nav-link">Servicios</a>
+                    <a sec:authorize="hasRole('USER')" href="/views/personas/listar"
+                       class="nav-item nav-link">Usuarios</a>
+                    <a sec:authorize="hasRole('GUEST')" href="/views/personas/listar"
+                       class="nav-item nav-link">Usuarios</a>
+                    <a sec:authorize="!isAuthenticated()" href="/views/personas/listar" class="nav-item nav-link">Usuarios</a>
+<!--                    <a sec:authorize="hasRole('ADMIN')" href="/views/personas/listar_todo" class="nav-item nav-link">Usuarios</a>-->
+                    <a sec:authorize="hasRole('ADMIN')" href="/dashboard" class="nav-item nav-link">Dashboard</a>
+                    <a sec:authorize="hasRole('USER')" href="/views/comentarios/listar" class="nav-item nav-link">Comentarios</a>
+                    <a sec:authorize="hasRole('GUEST')" href="/views/comentarios/listar" class="nav-item nav-link">Comentarios</a>
+                    <a sec:authorize="hasRole('USER')" href="/views/personas/puente" class="nav-item nav-link">Mi
+                        Perfil</a>
+                    <a sec:authorize="hasRole('GUEST')" href="/views/personas/puente" class="nav-item nav-link">Mi
+                        Perfil</a>
+                    <!--                 <a sec:authorize="isAuthenticated()" th:href="@{/modificar/__${persona.id}__}" class="nav-item nav-link">Editar</a>-->
+                    <a sec:authorize="hasRole('GUEST')" th:href="@{/views/ordenes/listar}" class="nav-item nav-link">Mis
+                        Ordenes</a>
+                    <a sec:authorize="hasRole('USER')" th:href="@{/views/ordenes/listarp}" class="nav-item nav-link">Mis
+                        Ordenes</a>
+<!--                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/views/ordenes/listar_admin}"-->
+<!--                       class="nav-item nav-link">Ordenes</a>-->
+                    <a href="/contacto" class="nav-item nav-link">Contacto</a>
+                </div>
+                <div class="nav-item dropdown me-auto btn btn-outline-dark btn-sm d-none d-lg-block">
+                    <a
+
+                            class="nav-item nav-link active nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                    ><i class="fa-solid fa-user-tie"></i></a
+                    >
+                    <div class="dropdown-menu">
+                        <a sec:authorize="!isAuthenticated()" href="/login" class="dropdown-item">Login</a>
+                        <a sec:authorize="!isAuthenticated()" href="/registro" class="dropdown-item">Register</a>
+                        <li sec:authorize="isAuthenticated()">
+                            <form th:action="@{/logout}" method="post">
+                                <button class="dropdown-item" type="submit">LOGOUT</button>
+                            </form>
+                    </div>
+                </div>
+                <div class="site-theme">
+                    <i
+                            class="fa-regular fa-lightbulb mr-3"
+                            onclick="cambiarModo()"
+                    ></i>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+</nav>
+
+<header th:fragment="header">
+    <div
+            class="jumbotron jumbotron-fluid position-relative overlay-bottom"
+            style="margin-bottom: 90px"
+    >
+        <div class="container text-center my-5 py-5">
+            <p sec:authorize="isAuthenticated()">
+                <span style="color:white"> Bienvenido: </span><span sec:authentication="name"
+                                                                    style="color:white"></span>
+            <p th:each="authority : ${#authentication.getAuthorities()}"
+               th:if="${authority.getAuthority().startsWith('ROLE_')}"
+               th:text="${authority.getAuthority().replaceFirst('ROLE_', '')}" style="color:white"></p>
+            </p>
+            <h1 class="text-white mt-4 mb-4 animate__animated animate__infinite animate__hinge animate__delay-3s animate__slower 6s">
+                ¿Deseas contratar un servicio?</h1>
+            <h1 class="text-white display-1 mb-5 animate__animated animate__infinite animate__pulse animate__slower 3s">
+                SERVICIOS</h1>
+            <div class="mx-auto mb-5" style="width: 100%; max-width: 600px">
+            </div>
+        </div>
+    </div>
+    <!--MENSAJES -->
+    <div class="row">
+        <div class=" container col-lg-6">
+            <div class="alert alert-success alert-dismissible fade show text-center" role="alert"
+                 th:if="${success !=null}">
+                <label th:text="${success}"></label>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div class="alert alert-danger alert-dismissible fade show text-center" role="alert"
+                 th:if="${error !=null}">
+                <label th:text="${error}"></label>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div class="alert alert-warning alert-dismissible fade show text-center" role="alert"
+                 th:if="${warning !=null}">
+                <label th:text="${warning}"></label>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div class="alert alert-info alert-dismissible fade show text-center" role="alert"
+                 th:if="${info !=null}">
+                <label th:text="${info}"></label>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+
+    </div>
+</header>
+
+<footer th:fragment="footer">
+    <div
+            class="container-fluid position-relative overlay-top bg-dark text-white-50 py-5"
+            style="margin-top: 90px"
+    >
+        <div class="container mt-5 pt-5">
+            <div class="row">
+                <div class="col-md-6 mb-5">
+                    <a href="index.html" class="navbar-brand">
+                        <h1 class="mt-n2 text-uppercase text-white">
+                            <i class="fa-solid fa-gear mr-3 text-white"></i>Arregla Ya
+                        </h1>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-5">
+                    <h3 class="text-white mb-4">Contáctenos</h3>
+                    <p><i class="fa fa-map-marker-alt mr-2"></i>Chacras de Coria, Mendoza</p>
+                    <!--<p><i class="fa fa-phone-alt mr-2"></i>+012 345 67890</p>-->
+                    <p class="animate__animated animate__infinite animate__pulse"><i class="fa fa-envelope mr-2"></i><a
+                            href="/contacto" class="contacto-footer" style="text-decoration:none">Enviar mensaje</a></p>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <h3 class="text-white mb-4">Servicios</h3>
+                    <div class="d-flex flex-column justify-content-start">
+                        <a class="text-white-50 mb-2" href="#"
+                        ><i class="fa fa-angle-right mr-2"></i>Educación</a
+                        >
+                        <a class="text-white-50 mb-2" href="#"
+                        ><i class="fa fa-angle-right mr-2"></i>Mantenimiento del
+                            hogar</a
+                        >
+                        <a class="text-white-50 mb-2" href="#"
+                        ><i class="fa fa-angle-right mr-2"></i>Bienestar</a
+                        >
+                        <a class="text-white-50 mb-2" href="#"
+                        ><i class="fa fa-angle-right mr-2"></i>Cuidado de niños</a
+                        >
+                        <a class="text-white-50" href="#"
+                        ><i class="fa fa-angle-right mr-2"></i>Descubre</a
+                        >
+                    </div>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <h3 class="text-white mb-4">Links</h3>
+                    <div class="d-flex flex-column justify-content-start">
+                        <a class="text-white-50 mb-2" href="https://www.iubenda.com/privacy-policy/34206305"
+                           target="_blank"
+                           title="Política de Privacidad"
+                        ><i class="fa fa-angle-right mr-2"></i>Política de privacidad</a>
+                        <a class="text-white-50 mb-2" href="#"
+                        ><i class="fa fa-angle-right mr-2"></i>Términos y condiciones</a
+                        >
+                        <a class="text-white-50 mb-2" href="#"
+                        ><i class="fa fa-angle-right mr-2"></i>FAQs frecuentes</a
+                        >
+                        <a class="text-white-50 mb-2" href="#"
+                        ><i class="fa fa-angle-right mr-2"></i>Ayuda & soporte</a
+                        >
+                        <!-- <a class="text-white-50" href="#"><i class="fa fa-angle-right mr-2"></i>Contact</a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div
+            class="container-fluid bg-dark text-white-50 border-top py-4"
+            style="border-color: rgba(256, 256, 256, 0.1) !important"
+    >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-left mb-3 mb-md-0">
+                    <p class="m-0 animate__animated animate__infinite animate__pulse">
+                        Copyright &copy; <a class="text-white " href="#">ArreglaYa</a>.
+                        All Rights Reserved.
+                    </p>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="go-top-container ">
+        <div class="go-top-button ">
+            <i class="fas fa-chevron-up "></i>
+        </div>
+        <script type="text/javascript" th:src="@{/js/gotop.js}"></script>
+    </div>
+
+    <!-- Script encargado de  filtrar tablas-->
+    <script type="text/javascript">
+    (function(document) {
+      'use strict';
+
+      var LightTableFilter = (function(Arr) {
+
+        var _input;
+
+        function _onInputEvent(e) {
+          _input = e.target;
+          var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
+          Arr.forEach.call(tables, function(table) {
+            Arr.forEach.call(table.tBodies, function(tbody) {
+              Arr.forEach.call(tbody.rows, _filter);
+            });
+          });
+        }
+
+        function _filter(row) {
+          var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
+          row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+        }
+
+        return {
+          init: function() {
+            var inputs = document.getElementsByClassName('light-table-filter');
+            Arr.forEach.call(inputs, function(input) {
+              input.oninput = _onInputEvent;
+            });
+          }
+        };
+      })(Array.prototype);
+
+      document.addEventListener('readystatechange', function() {
+        if (document.readyState === 'complete') {
+          LightTableFilter.init();
+        }
+      });
+
+    })(document);
+
+    </script>
+
+</footer>
+</body>
+</html>

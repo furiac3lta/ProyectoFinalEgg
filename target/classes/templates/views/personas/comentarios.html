@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout/layout :: head"></head>
+<body>
+<nav th:replace="/layout/layout :: navbar"></nav>
+<header th:replace="/layout/layout :: header"></header>
+
+<div>
+
+
+    <div class="form-group">
+    <div  class="container col-lg-6 mt-4">
+    <h1 class="pb-5">Comentario </h1>
+    <p>Nombre y Apellido Prestador Servicio</p>
+        <b th:text="${persona.nombre}" /> <b th:text="${persona.apellido}" />
+        <hr>
+    <p>Correo:</p>  <b th:text="${persona.email}" />
+        <hr>
+
+    <form th:action="@{'/views/personas/persona/' + ${persona.id} + '/comentarios'}"  th:object="${comentario}" method="post" enctype="multipart/form-data" >
+            <div class="form-group">
+                <label class="col-sm-2 col-form-label">Opinion</label>
+                <div class="col-sm-6">
+                    <input type="text" th:field="*{opinion}" class="form-control" th:errorclass="'form-control alert-danger'" />
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('opinion')}" th:errors="*{opinion}"></small>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-6">
+                <label class="col-sm-2 col-form-label" th:for="experiencia">Experiencia</label>
+                <select name="comentario" th:field="*{experiencia}" class="form-select">
+                    <option th:each="experiencia : ${experiencias}"
+                            th:text="${experiencia.name}"
+                            th:value="${experiencia}"/>
+                </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-6 col-form-label">Adjunte una imagen del trabajo calificado</label>
+                    <div class="col-sm-6">
+                        <input type="file" name="file" id="imagen" class="form-control" />
+                    </div>
+                </div>
+              <div class="form-group">
+                  <p sec:authorize="isAuthenticated()">
+                      <label class="col-sm-2 col-form-label">Autor</label>
+                      <span sec:authentication="name" style="color:red"></span>
+                  </p>
+              </div>
+                <input type="hidden" th:field="*{id}" />
+                <div class="form-group">
+                    <div class="col-sm-6">
+                 <input  class="btn btn-secondary" type="submit" value="Agregar calificacion"/>
+                </div>
+                </div>
+            </div>
+
+    </form>
+</div>
+    </div>
+<footer th:replace="/layout/layout :: footer"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+</div>
+</body>
+</html>

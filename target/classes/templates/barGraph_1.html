@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout/layout_dashboard :: head"></head>
+
+<body>
+<aside class="sidebar">
+	<div class="logo-details">
+		<!--  <i class='bx bxl-c-plus-plus'></i>-->
+		<i class="bx bxs-cog"></i>
+		<a th:href="@{/}">
+			<span class="logo_name">ArreglaYa</span>
+		</a>
+	</div>
+	<ul class="nav-links">
+		<li>
+			<a href="/dashboard" class="active">
+				<i class='bx bx-grid-alt'></i>
+				<span class="links_name">Dashboard</span>
+			</a>
+		</li>
+		<li>
+			<a href="/displayBarGraph">
+				<i class='bx bxs-bar-chart-alt-2' ></i>
+				<span class="links_name">Grafico Rol</span>
+			</a>
+		</li>
+		<li>
+			<a href="/displayBarGraph_1">
+				<i class='bx bx-bar-chart-alt-2'></i>
+				<span class="links_name">Grafico Comentario</span>
+			</a>
+		</li>
+		<li>
+			<a th:href="@{/views/ordenes/listar_admin}">
+				<i class='bx bx-list-ul'></i>
+				<span class="links_name">Ordenes</span>
+			</a>
+		</li>
+		<li>
+			<a href="views/servicios/listar">
+				<i class='bx bx-book-alt'></i>
+				<span class="links_name">Servicios</span>
+			</a>
+		</li>
+		<li>
+			<a href="/views/personas/listar_todo">
+				<i class='bx bx-user'></i>
+				<span class="links_name">Usuarios</span>
+			</a>
+		</li>
+		<li>
+			<a href="/views/comentarios/listar">
+				<i class='bx bx-message'></i>
+				<span class="links_name">Comentarios</span>
+			</a>
+		</li>
+		<li>
+			<a href="/views/personas/puente">
+				<i class='bx bx-cog'></i>
+				<span class="links_name">Mi Perfil</span>
+			</a>
+		</li>
+		<li class="log_out">
+			<a th:href="@{/}">
+				<i class='bx bx-log-out'></i>
+				<span class="links_name">Volver a inicio</span>
+			</a>
+		</li>
+	</ul>
+</aside>
+<section class="home-section">
+	<nav>
+		<div class="sidebar-button">
+			<i class='bx bx-menu sidebarBtn'></i>
+			<span class="dashboard">Dashboard</span>
+		</div>
+
+	</nav>
+
+	<div class="home-content">
+
+	</div>
+
+	<div class="container">
+		<h2 align="center">Arregla Ya</h2>
+
+		<div id="container"
+			 style="width: 800px; height: 600px; margin: 0 auto"></div>
+	</div>
+</section>
+
+<footer th:replace="/layout/layout_dashboard :: footer"></footer>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script th:inline="javascript">
+    $(function(){
+    Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'grafico de barra'
+        },
+        colors:[
+            '# FFFF00', // negro
+                         '# FF0000', // Rojo
+                         '# 00FF00', // verde
+                         '# 0000FF', // azul
+                         '# FFFF00', // amarillo
+                         '# FF00FF', // morado
+                         '#FFFFFF', // morado
+          ],
+        subtitle: {
+            text: 'Cantidad de Comentarios por experiencia'
+        },
+        xAxis: {
+            categories: [[${surveyMap.keySet()}]],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            max:15,
+            title: {
+                text: 'Comentarios por Experiencia'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} K</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Arregla YA',
+            data: [[${surveyMap.values()}]]
+        }]
+    });
+    });
+</script>
+
+</body>
+</html>

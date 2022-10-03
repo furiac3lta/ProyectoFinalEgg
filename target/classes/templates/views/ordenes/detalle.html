@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout/layout :: head"></head>
+<body>
+<nav th:replace="/layout/layout :: navbar"></nav>
+<header th:replace="/layout/layout :: header"></header>
+<div class="row tarjetas" >
+    <div  class="container col-lg-6 mt-4">
+        <div   class="card mb-3" th:if="${orden.activo == true}" style="max-width: 640px">
+            <div class="row g-0">
+                <div class="col-md-5">
+                </div>
+                <div class="col-md-12">
+                    <div class="card-body">
+                        <h4 class="card-title">Nº orden</h4>
+                        <h6 th:text="${orden.prestador.id}" class="card-text"></h6>
+                        <h4 class="card-title">Detalle</h4>
+                        <h6 th:text="${orden.detalle}" class="card-text"></h6>
+                        <h4 class="card-title">Nombre y Apellido Prestador Servicio</h4>
+                        <b th:text="${orden.prestador.nombre}" class="card-text"  /> <b th:text="${orden.prestador.apellido}"  />
+<!--                        <hr>-->
+<!--                        <p>Correo:</p>  <b th:text="${persona.email}" />-->
+<!--                        <hr>-->
+<!--                        <b th:text="${orden.prestador.nombre}" /> <b th:text="${orden.prestador.apellido}" />-->
+<!--                        <h6 th:text="${orden.prestador.nombre}" class="card-text"></h6> <h6 th:text="${orden.prestador.apellido}" class="card-text"></h6>-->
+                        <hr>
+
+                        <a th:href="@{/views/personas/comentarios/}+${orden.prestador.id}"
+                           class="comentario class="card-text"" title="comentario" data-toggle="tooltip">
+                            <i class="fa-solid fa-comment card-text"></i></a>
+                        <p class="card-text">
+                            <small class="text-muted">Actualizado hace 3 mins</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:replace="/layout/layout :: footer"></footer>
+</body>
+</html>
