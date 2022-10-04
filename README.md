@@ -1,9 +1,10 @@
 # Proyecto Final Egg - Grupo 2
 
 ## Integrantes
-Frontend
+### Frontend
+
  CAMILA IBARRA - JULIETA SANCHEZ 
-Backend
+### Backend
  LUCAS IBARRA - COLUM MARCELO
 
 # Descripcion del proyecto.-
