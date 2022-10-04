@@ -1,6 +1,6 @@
 # Proyecto Final Egg - Grupo 2
 
-##Integrantes
+## Integrantes
 Frontend
  CAMILA IBARRA - JULIETA SANCHEZ 
 Backend
