@@ -3,84 +3,53 @@ package com.egg.proyectoFinal.controllers;
 import com.egg.proyectoFinal.entities.Servicio;
 import com.egg.proyectoFinal.services.impl.ServcicioServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import javax.transaction.Transactional;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
-
-@Controller
-@RequestMapping("/views/servicios")
+@RestController
+@RequestMapping("/api/servicios")
 public class ServicioController {
     @Autowired
     private ServcicioServiceImpl servcicioService;
 
-    @GetMapping("/listar")
-    public String listar(Model model) {
-        List<Servicio> servicios = servcicioService.findAll();
-        model.addAttribute("servicios", servicios);
-        return "/views/servicios/servicios";
+    @GetMapping
+    public List<Servicio> listar() {
+        return servcicioService.findAll();
     }
 
-    @RequestMapping(value = "/form")
-    public String crearServicio(Model model) {
-        Servicio servicio = new Servicio();
-        model.addAttribute("servicio", servicio);
-        model.addAttribute("titulo", "Formulario de Servicio ");
-        return "/views/servicios/form";
+    @GetMapping("/{id}")
+    public ResponseEntity<Servicio> detalle(@PathVariable("id") Long id) {
+        Optional<Servicio> servicio = Optional.ofNullable(servcicioService.findById(id));
+        return servicio.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/form")
-    public String guardar(Servicio servicio, BindingResult result, Model model, RedirectAttributes attributes) {
-        if (result.hasErrors()) {
-            model.addAttribute("servicio", "formulario de servicio");
-            return "/views/servicios/form";
+    @PostMapping
+    public ResponseEntity<Servicio> crear(@Valid @RequestBody Servicio servicio) {
+        Servicio creado = servcicioService.create(servicio);
+        return new ResponseEntity<>(creado, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Servicio> actualizar(@PathVariable("id") Long id, @Valid @RequestBody Servicio servicio) {
+        if (servcicioService.findById(id) == null) {
+            return ResponseEntity.notFound().build();
         }
-        servcicioService.create(servicio);
-        model.addAttribute("success", "Servicio Agregado con Exito!!");
-        return "redirect:/views/servicios/listar";
+        servicio.setId(id);
+        Servicio actualizado = servcicioService.update(servicio, id);
+        return ResponseEntity.ok(actualizado);
     }
 
-    @GetMapping(value = "/form/{id}")
-    public String editar(Model model, @PathVariable("id") Long id) {
-        Servicio servicio = null;
-        if (id > 0) {
-            servicio = servcicioService.findById(id);
-        } else {
-            return "redirect:/views/servicios/listar";
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) {
+        if (servcicioService.findById(id) == null) {
+            return ResponseEntity.notFound().build();
         }
-        model.addAttribute("servicio", servicio);
-        return "/views/servicios/form";
+        servcicioService.delete(new Servicio(), id);
+        return ResponseEntity.noContent().build();
     }
-
-    @GetMapping(value = "/detalle/{id}")
-    public String detalle(Model model, @PathVariable("id") Long id) {
-
-        if (id > 0) {
-            Servicio servicio = servcicioService.findById(id);
-            model.addAttribute("servicio", servicio);
-
-        } else {
-            return "redirect:/views/servicios/listar";
-        }
-        return "/views/servicios/detalle";
-    }
-
-    @RequestMapping(value = "/eliminar/{id}")
-    @Transactional
-    public String eliminar(@PathVariable(value = "id") Long id, Servicio servicio, Model model) {
-        if (id > 0) {
-            servcicioService.delete(servicio, id);
-            model.addAttribute("success", "Servicio Eliminado con Exito!!");
-        }
-        return "redirect:/views/servicios/listar";
-    }
-
-
 }

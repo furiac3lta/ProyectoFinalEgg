@@ -2,55 +2,46 @@ package com.egg.proyectoFinal.controllers;
 
 import com.egg.proyectoFinal.entities.Comentario;
 import com.egg.proyectoFinal.services.impl.ComentarioServiceImpl;
-import com.egg.proyectoFinal.services.impl.PersonaServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
-@Controller
-@RequestMapping("/views/comentarios")
+@RestController
+@RequestMapping("/api/comentarios")
 public class ComentarioController {
 
     @Autowired
     private ComentarioServiceImpl comentarioService;
 
-    @Autowired
-    private PersonaServiceImpl personaService;
-
-    @GetMapping("/listar")
-    public String listar(Model model){
-        List<Comentario> comentarios = comentarioService.findAll();
-        model.addAttribute("comentarios", comentarios);
-        return "/views/comentarios/comentarios";
+    @GetMapping
+    public List<Comentario> listar() {
+        return comentarioService.findAll();
     }
 
-    @GetMapping(value="/detalle/{id}")
-    public String detalle(Model model, @PathVariable("id") Long id){
-        if(id>0){
-            Comentario comentario = comentarioService.findById(id);
-            model.addAttribute("comentario", comentario);
-        }else{
-            return "redirect:/views/comentarios/listar";
-        }
-        return "/views/comentarios/detalle";
+    @GetMapping("/{id}")
+    public ResponseEntity<Comentario> detalle(@PathVariable("id") Long id) {
+        Optional<Comentario> comentario = Optional.ofNullable(comentarioService.findById(id));
+        return comentario.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @RequestMapping(value="/eliminar/{id}")
+    @PostMapping
+    public ResponseEntity<Comentario> crear(@RequestBody Comentario comentario) {
+        Comentario creado = comentarioService.create(comentario);
+        return new ResponseEntity<>(creado, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
     @Transactional
-    public String eliminar(@PathVariable(value="id") Long id, Comentario comentario, Model model){
-        if(id>0){
-            comentarioService.delete(comentario, id);
-            model.addAttribute("error", "Comentario eliminado con exito!!");
+    public ResponseEntity<Void> eliminar(@PathVariable(value = "id") Long id) {
+        if (comentarioService.findById(id) == null) {
+            return ResponseEntity.notFound().build();
         }
-        return "redirect:/views/comentarios/listar";
+        comentarioService.delete(new Comentario(), id);
+        return ResponseEntity.noContent().build();
     }
-
-
 }
