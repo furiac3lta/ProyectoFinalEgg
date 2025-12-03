@@ -9,6 +9,7 @@ import com.egg.proyectoFinal.services.impl.OrdenServiceImpl;
 import com.egg.proyectoFinal.services.impl.PersonaServiceImpl;
 import com.egg.proyectoFinal.services.impl.ServcicioServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +34,7 @@ public class DashBoardController {
     private ComentarioServiceImpl comentarioService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public Map<String, Object> resumen() {
         Map<String, Object> resumen = new HashMap<>();
         resumen.put("ordenes", ordenService.findAll());
@@ -43,17 +45,20 @@ public class DashBoardController {
     }
 
     @GetMapping("/personas")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Persona> personas() {
         return personaService.findAll();
     }
 
     @GetMapping("/roles")
+    @PreAuthorize("hasRole('ADMIN')")
     public Map<String, Integer> graficoRol() {
         List<String> surveyList = personaService.findCantidadRolLista();
         return personaService.convertirArrayRolAMap(surveyList);
     }
 
     @GetMapping("/comentarios")
+    @PreAuthorize("hasRole('ADMIN')")
     public Map<String, Integer> graficoComentarios() {
         List<String> surveyList = comentarioService.listarCantidadComentariosPorExperiencia();
         return comentarioService.convertirArrayComentariosAMap(surveyList);

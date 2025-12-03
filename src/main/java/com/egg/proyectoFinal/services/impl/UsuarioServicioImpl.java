@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,11 +24,14 @@ public class UsuarioServicioImpl implements UserDetailsService {
     @Autowired
     private PersonaServiceImpl personaService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
     public void registrar(Persona persona, String password, String email) {
         try {
             persona.setEmail(email);
-            persona.setPassword(new BCryptPasswordEncoder().encode(password));
+            persona.setPassword(passwordEncoder.encode(password));
             persona.setRol(Rol.GUEST);
 
             personaService.create(persona);
@@ -56,19 +59,15 @@ public class UsuarioServicioImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        try {
-            Persona persona = personaService.findByEmail(email);
+        Persona persona = personaService.findByEmail(email);
 
-            if (persona != null) {
-                List<GrantedAuthority> permisos = new ArrayList<>();
-                GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + persona.getRol().toString());
-                permisos.add(p);
-                return new User(persona.getEmail(), persona.getPassword(), permisos);
-            }
-        }catch(Exception e){
-            e.printStackTrace();
+        if (persona != null) {
+            List<GrantedAuthority> permisos = new ArrayList<>();
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + persona.getRol().toString());
+            permisos.add(p);
+            return new User(persona.getEmail(), persona.getPassword(), permisos);
         }
-        return null;
+        throw new UsernameNotFoundException("No se encontró el usuario " + email);
     }
 
     @Transactional
@@ -79,7 +78,7 @@ public class UsuarioServicioImpl implements UserDetailsService {
             personaEdit.setEmail(persona.getEmail());
             personaEdit.setServicio(persona.getServicio());
             personaEdit.setFoto(persona.getFoto());
-            personaEdit.setPassword(new BCryptPasswordEncoder().encode(persona.getPassword()));
+            personaEdit.setPassword(passwordEncoder.encode(persona.getPassword()));
             persona.setUpdatedAt();
             personaService.update(personaEdit, personaEdit.getId());
         }catch(Exception e){

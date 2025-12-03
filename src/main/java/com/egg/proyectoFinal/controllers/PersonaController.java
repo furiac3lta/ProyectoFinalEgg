@@ -9,6 +9,7 @@ import com.egg.proyectoFinal.services.impl.PersonaServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,16 +32,19 @@ public class PersonaController {
     private OrdenServiceImpl ordenService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','USER','GUEST')")
     public List<Persona> listarUsuariosActivos() {
         return personaService.findPorRol("USER");
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('ADMIN','USER','GUEST')")
     public List<Persona> listarTodas() {
         return personaService.findAll();
     }
 
     @GetMapping("/buscar")
+    @PreAuthorize("hasAnyRole('ADMIN','USER','GUEST')")
     public List<Persona> buscarPorNombre(@RequestParam(value = "nombre", required = false) String nombre,
                                          @RequestParam(value = "oficio", required = false) String oficio,
                                          @RequestParam(value = "email", required = false) String email) {
@@ -55,18 +59,21 @@ public class PersonaController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER','GUEST')")
     public ResponseEntity<Persona> detalle(@PathVariable("id") Long id) {
         Optional<Persona> persona = personaService.porId(id);
         return persona.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Persona> crear(@Valid @RequestBody Persona persona) {
         Persona creada = personaService.create(persona);
         return new ResponseEntity<>(creada, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Persona> actualizar(@PathVariable("id") Long id, @Valid @RequestBody Persona persona) {
         if (!personaService.porId(id).isPresent()) {
             return ResponseEntity.notFound().build();
@@ -77,6 +84,7 @@ public class PersonaController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) {
         if (!personaService.porId(id).isPresent()) {
             return ResponseEntity.notFound().build();
@@ -86,6 +94,7 @@ public class PersonaController {
     }
 
     @GetMapping("/{id}/comentarios")
+    @PreAuthorize("hasAnyRole('ADMIN','USER','GUEST')")
     public ResponseEntity<Map<String, Object>> comentarios(@PathVariable Long id) {
         Optional<Persona> persona = personaService.porId(id);
         if (persona.isEmpty()) {
@@ -99,6 +108,7 @@ public class PersonaController {
     }
 
     @PostMapping("/{id}/comentarios")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<Comentario> agregarComentario(@PathVariable Long id, @Valid @RequestBody Comentario comentario) {
         Optional<Persona> persona = personaService.porId(id);
         if (persona.isEmpty()) {
@@ -110,6 +120,7 @@ public class PersonaController {
     }
 
     @GetMapping("/{id}/ordenes")
+    @PreAuthorize("hasAnyRole('ADMIN','USER','GUEST')")
     public ResponseEntity<Map<String, Object>> ordenes(@PathVariable Long id) {
         Optional<Persona> persona = personaService.porId(id);
         if (persona.isEmpty()) {
