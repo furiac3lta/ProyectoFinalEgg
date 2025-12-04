@@ -17,7 +17,7 @@ import { OrdenesService, Orden } from './ordenes.service';
       <div class="actions">
         <mat-form-field appearance="outline">
           <mat-label>Buscar</mat-label>
-          <input matInput (keyup)="filter($event.target?.value || '')" placeholder="detalle o email">
+          <input matInput (keyup)="filter((($event.target as HTMLInputElement)?.value) || '')" placeholder="detalle o email">
         </mat-form-field>
         <a mat-raised-button color="primary" routerLink="/ordenes/nueva">Nueva orden</a>
       </div>

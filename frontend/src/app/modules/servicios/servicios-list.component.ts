@@ -24,7 +24,7 @@ import { ServiciosService, Servicio } from './servicios.service';
     <mat-card class="filters">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Buscar</mat-label>
-        <input matInput (keyup)="filter($event.target?.value || '')" placeholder="Palabra clave">
+        <input matInput (keyup)="filter((($event.target as HTMLInputElement)?.value) || '')" placeholder="Palabra clave">
       </mat-form-field>
       <a mat-raised-button color="primary" routerLink="/servicios/nuevo">Agregar servicio</a>
     </mat-card>

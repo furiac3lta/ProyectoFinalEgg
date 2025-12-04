@@ -19,7 +19,7 @@ import { PersonasService, Persona } from './personas.service';
         <div class="actions">
           <mat-form-field appearance="outline">
             <mat-label>Buscar</mat-label>
-            <input matInput (keyup)="filter($event.target?.value || '')" placeholder="Nombre o email">
+            <input matInput (keyup)="filter((($event.target as HTMLInputElement)?.value) || '')" placeholder="Nombre o email">
           </mat-form-field>
           <a mat-raised-button color="primary" routerLink="/personas/nuevo">Nuevo</a>
         </div>
