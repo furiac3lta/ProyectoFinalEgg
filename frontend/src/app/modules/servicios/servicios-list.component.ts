@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { ServiciosService, Servicio } from './servicios.service';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   standalone: true,
@@ -19,7 +20,7 @@ import { ServiciosService, Servicio } from './servicios.service';
         <mat-card-actions>
           <a mat-button color="primary" [routerLink]="['/servicios', servicio.id]">Ver</a>
           <a mat-button color="accent" [routerLink]="['/servicios', servicio.id, 'editar']">Editar</a>
-          <button mat-button color="warn" (click)="delete(servicio.id)">Eliminar</button>
+          <button mat-button color="warn" (click)="delete(servicio.id)" *ngIf="isAdmin">Eliminar</button>
         </mat-card-actions>
       </mat-card>
     </div>
@@ -37,17 +38,21 @@ import { ServiciosService, Servicio } from './servicios.service';
 export class ServiciosListComponent implements OnInit {
   data: Servicio[] = [];
   filtered: Servicio[] = [];
-  constructor(private service: ServiciosService) {}
+  constructor(private service: ServiciosService, private auth: AuthService) {}
   ngOnInit(): void { this.service.getAll().subscribe(res => { this.data = res; this.filtered = res; }); }
   filter(term: string): void {
     const value = term.toLowerCase();
     this.filtered = this.data.filter(s => s.tipo.toLowerCase().includes(value) || s.detalle.toLowerCase().includes(value));
   }
   delete(id?: number): void {
-    if (id === undefined) { return; }
+    if (!this.isAdmin || id === undefined) { return; }
     this.service.delete(id).subscribe(() => {
       this.data = this.data.filter(s => s.id !== id);
       this.filtered = this.filtered.filter(s => s.id !== id);
     });
+  }
+
+  get isAdmin(): boolean {
+    return this.auth.role === 'ADMIN';
   }
 }

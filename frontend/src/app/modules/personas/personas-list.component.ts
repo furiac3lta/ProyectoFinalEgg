@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { PersonasService, Persona } from './personas.service';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   standalone: true,
@@ -42,6 +43,7 @@ import { PersonasService, Persona } from './personas.service';
           <td mat-cell *matCellDef="let row">
             <a mat-button color="primary" [routerLink]="['/personas', row.id]">Ver</a>
             <a mat-button color="accent" [routerLink]="['/personas', row.id, 'editar']">Editar</a>
+            <button mat-button color="warn" (click)="delete(row.id)" *ngIf="isAdmin">Eliminar</button>
           </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="cols"></tr>
@@ -58,7 +60,7 @@ export class PersonasListComponent implements OnInit {
   filtered: Persona[] = [];
   cols = ['nombre', 'email', 'rol', 'acciones'];
 
-  constructor(private service: PersonasService) {}
+  constructor(private service: PersonasService, private auth: AuthService) {}
 
   ngOnInit(): void {
     this.service.getAll().subscribe(res => { this.data = res; this.filtered = res; });
@@ -67,5 +69,17 @@ export class PersonasListComponent implements OnInit {
   filter(term: string): void {
     const value = term.toLowerCase();
     this.filtered = this.data.filter(p => p.nombre.toLowerCase().includes(value) || p.email.toLowerCase().includes(value));
+  }
+
+  delete(id?: number): void {
+    if (!this.isAdmin || id === undefined) { return; }
+    this.service.delete(id).subscribe(() => {
+      this.data = this.data.filter(p => p.id !== id);
+      this.filtered = this.filtered.filter(p => p.id !== id);
+    });
+  }
+
+  get isAdmin(): boolean {
+    return this.auth.role === 'ADMIN';
   }
 }
