@@ -34,32 +34,47 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    // ===========================================
+    // AUTH MANAGER
+    // ===========================================
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
+    // ===========================================
+    // USER DETAILS + PASSWORD ENCODER
+    // ===========================================
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(usuarioServicio).passwordEncoder(passwordEncoder);
     }
 
+    // ===========================================
+    // HTTP SECURITY + JWT + CORS
+    // ===========================================
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors()  // Habilita CORS, pero la configuración está en CorsConfig.java
+                .and()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+
+                // RUTAS PÚBLICAS
                 .antMatchers(HttpMethod.POST, "/api/auth/registro").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/auth").permitAll()
+
+                // TODO LO DEMÁS REQUIERE JWT
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
 
+        // FILTRO JWT
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
-
