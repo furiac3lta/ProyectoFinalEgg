@@ -6,5 +6,6 @@ import { OrdenDetailComponent } from './orden-detail.component';
 export const ORDENES_ROUTES: Routes = [
   { path: '', component: OrdenListComponent },
   { path: 'nueva', component: OrdenFormComponent },
+  { path: ':id/editar', component: OrdenFormComponent },
   { path: ':id', component: OrdenDetailComponent }
 ];

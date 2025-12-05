@@ -6,5 +6,6 @@ import { PersonaDetailComponent } from './persona-detail.component';
 export const PERSONAS_ROUTES: Routes = [
   { path: '', component: PersonasListComponent },
   { path: 'nuevo', component: PersonaFormComponent },
+  { path: ':id/editar', component: PersonaFormComponent },
   { path: ':id', component: PersonaDetailComponent }
 ];

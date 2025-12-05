@@ -33,7 +33,10 @@ import { OrdenesService, Orden } from './ordenes.service';
       </ng-container>
       <ng-container matColumnDef="acciones">
         <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let row"><a mat-button [routerLink]="['/ordenes', row.id]">Ver</a></td>
+        <td mat-cell *matCellDef="let row">
+          <a mat-button [routerLink]="['/ordenes', row.id]">Ver</a>
+          <a mat-button color="accent" [routerLink]="['/ordenes', row.id, 'editar']">Editar</a>
+        </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="cols"></tr>
       <tr mat-row *matRowDef="let row; columns: cols"></tr>

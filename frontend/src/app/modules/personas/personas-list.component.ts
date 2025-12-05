@@ -41,6 +41,7 @@ import { PersonasService, Persona } from './personas.service';
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let row">
             <a mat-button color="primary" [routerLink]="['/personas', row.id]">Ver</a>
+            <a mat-button color="accent" [routerLink]="['/personas', row.id, 'editar']">Editar</a>
           </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="cols"></tr>

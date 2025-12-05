@@ -15,6 +15,7 @@ import { ComentariosService, Comentario } from './comentarios.service';
       <mat-list-item *ngFor="let c of comentarios">
         <div matListItemTitle>{{ c.opinion }}</div>
         <div matListItemLine>{{ c.experiencia }}</div>
+        <a mat-button color="accent" [routerLink]="['/comentarios', c.id, 'editar']" *ngIf="c.id">Editar</a>
       </mat-list-item>
     </mat-list>
     <a mat-raised-button color="primary" routerLink="/comentarios/nuevo">Agregar comentario</a>

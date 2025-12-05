@@ -18,6 +18,7 @@ import { ServiciosService, Servicio } from './servicios.service';
         <mat-card-content>{{ servicio.detalle }}</mat-card-content>
         <mat-card-actions>
           <a mat-button color="primary" [routerLink]="['/servicios', servicio.id]">Ver</a>
+          <a mat-button color="accent" [routerLink]="['/servicios', servicio.id, 'editar']">Editar</a>
           <button mat-button color="warn" (click)="delete(servicio.id)">Eliminar</button>
         </mat-card-actions>
       </mat-card>

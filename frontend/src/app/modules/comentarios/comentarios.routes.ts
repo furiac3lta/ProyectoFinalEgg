@@ -4,5 +4,6 @@ import { ComentarioFormComponent } from './comentario-form.component';
 
 export const COMENTARIOS_ROUTES: Routes = [
   { path: '', component: ComentarioListComponent },
-  { path: 'nuevo', component: ComentarioFormComponent }
+  { path: 'nuevo', component: ComentarioFormComponent },
+  { path: ':id/editar', component: ComentarioFormComponent }
 ];
