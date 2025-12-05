@@ -18,6 +18,7 @@ import { ServiciosService, Servicio } from './servicios.service';
         <mat-card-content>{{ servicio.detalle }}</mat-card-content>
         <mat-card-actions>
           <a mat-button color="primary" [routerLink]="['/servicios', servicio.id]">Ver</a>
+          <button mat-button color="warn" (click)="delete(servicio.id)">Eliminar</button>
         </mat-card-actions>
       </mat-card>
     </div>
@@ -40,5 +41,12 @@ export class ServiciosListComponent implements OnInit {
   filter(term: string): void {
     const value = term.toLowerCase();
     this.filtered = this.data.filter(s => s.tipo.toLowerCase().includes(value) || s.detalle.toLowerCase().includes(value));
+  }
+  delete(id?: number): void {
+    if (id === undefined) { return; }
+    this.service.delete(id).subscribe(() => {
+      this.data = this.data.filter(s => s.id !== id);
+      this.filtered = this.filtered.filter(s => s.id !== id);
+    });
   }
 }
