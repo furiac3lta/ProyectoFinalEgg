@@ -9,14 +9,17 @@ import com.egg.proyectoFinal.services.impl.OrdenServiceImpl;
 import com.egg.proyectoFinal.services.impl.PersonaServiceImpl;
 import com.egg.proyectoFinal.services.impl.ServcicioServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
-@Controller
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/dashboard")
 public class DashBoardController {
     @Autowired
     private OrdenServiceImpl ordenService;
@@ -29,37 +32,35 @@ public class DashBoardController {
 
     @Autowired
     private ComentarioServiceImpl comentarioService;
-    @GetMapping("/dashboard")
-    public String dashboard(Model model){
-        List<Orden> ordenes = ordenService.findAll();
-        List<Comentario> comentarios = comentarioService.findAll();
-        List<Persona> personas = personaService.findAll();
-        List<Servicio> servicios = servicioService.findAll();
-        model.addAttribute("ordenes", ordenes);
-        model.addAttribute("comentarios", comentarios);
-        model.addAttribute("personas", personas);
-        model.addAttribute("servicios", servicios);
-        return "dashboard";
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public Map<String, Object> resumen() {
+        Map<String, Object> resumen = new HashMap<>();
+        resumen.put("ordenes", ordenService.findAll());
+        resumen.put("comentarios", comentarioService.findAll());
+        resumen.put("personas", personaService.findAll());
+        resumen.put("servicios", servicioService.findAll());
+        return resumen;
     }
-    @GetMapping("/dashboard_reportes")
-    public @ResponseBody List<Persona> listar(){
+
+    @GetMapping("/personas")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Persona> personas() {
         return personaService.findAll();
     }
 
-    @GetMapping("/displayBarGraph")
-    public String graficoRol(Model model) {
-        List<String>surveyList = personaService.findCantidadRolLista();
-        HashMap<String, Integer> surveyMap = personaService.convertirArrayRolAMap(surveyList);
-        model.addAttribute("surveyMap", surveyMap);
-        return "barGraph";
-    }
-    @GetMapping("/displayBarGraph_1")
-    public String graficaComentarios(Model model) {
-        List<String>surveyList = comentarioService.listarCantidadComentariosPorExperiencia();
-        HashMap<String, Integer> surveyMap = comentarioService.convertirArrayComentariosAMap(surveyList);
-        model.addAttribute("surveyMap", surveyMap);
-        return "barGraph_1";
+    @GetMapping("/roles")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Map<String, Integer> graficoRol() {
+        List<String> surveyList = personaService.findCantidadRolLista();
+        return personaService.convertirArrayRolAMap(surveyList);
     }
 
+    @GetMapping("/comentarios")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Map<String, Integer> graficoComentarios() {
+        List<String> surveyList = comentarioService.listarCantidadComentariosPorExperiencia();
+        return comentarioService.convertirArrayComentariosAMap(surveyList);
+    }
 }
-
