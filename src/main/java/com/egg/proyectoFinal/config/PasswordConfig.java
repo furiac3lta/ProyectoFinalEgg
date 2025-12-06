@@ -3,29 +3,35 @@ package com.egg.proyectoFinal.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 public class PasswordConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        String encodingId = "bcrypt";
-        Map<String, PasswordEncoder> encoders = new HashMap<>();
-        encoders.put(encodingId, new BCryptPasswordEncoder());
-        // Soporta hashes antiguos generados con el identificador "null"
-        encoders.put("null", new BCryptPasswordEncoder());
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 
-        DelegatingPasswordEncoder delegatingPasswordEncoder =
-                new DelegatingPasswordEncoder(encodingId, encoders);
+        return new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence rawPassword) {
+                return bcrypt.encode(rawPassword);
+            }
 
-        // Permite validar contraseñas antiguas sin el prefijo {id}
-        delegatingPasswordEncoder.setDefaultPasswordEncoderForMatches(new BCryptPasswordEncoder());
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                String sanitized = encodedPassword;
 
-        return delegatingPasswordEncoder;
+                // Soporta hashes antiguos con prefijo {bcrypt} o {null}
+                if (encodedPassword != null && encodedPassword.startsWith("{")) {
+                    int closing = encodedPassword.indexOf('}');
+                    if (closing > 0 && encodedPassword.length() > closing + 1) {
+                        sanitized = encodedPassword.substring(closing + 1);
+                    }
+                }
+
+                return bcrypt.matches(rawPassword, sanitized);
+            }
+        };
     }
 }
