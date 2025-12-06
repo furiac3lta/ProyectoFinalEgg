@@ -24,6 +24,11 @@ public interface PersonaRespository extends JpaRepository<Persona, Long> {
     Persona findByEmail(String email);
 
     @Transactional(readOnly = true)
+    Optional<Persona> findByEmailIgnoreCase(String email);
+
+
+
+    @Transactional(readOnly = true)
     @Query(value = "SELECT * from persona WHERE persona.rol LIKE %:filtro%", nativeQuery = true)
     List<Persona> findPorRol(String filtro);
 

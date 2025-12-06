@@ -110,10 +110,10 @@ public class PersonaServiceImpl implements PersonaServices {
     }
 
     @Override
-    public Persona findByEmail(String email){
-        return personaRespository.findByEmail(email);
-    };
+    public Persona findByEmail(String email) {
+        return personaRespository.findByEmailIgnoreCase(email.trim()).orElse(null);
 
+    }
     @Override
     public HashMap<String, Integer> convertirArrayRolAMap(List<String> surveyList) {
         HashMap<String, Integer> hashMap = new HashMap<>();
