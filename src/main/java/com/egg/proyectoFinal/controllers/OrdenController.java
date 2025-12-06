@@ -50,7 +50,7 @@ public class OrdenController {
     }
 
     @PostMapping("/persona/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER','GUEST')")
     public ResponseEntity<Orden> crear(@PathVariable Long id, @Valid @RequestBody Orden orden) {
         Persona persona = personaService.findById(id);
         if (persona == null) {
