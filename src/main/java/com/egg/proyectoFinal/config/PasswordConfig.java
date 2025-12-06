@@ -17,6 +17,8 @@ public class PasswordConfig {
         String encodingId = "bcrypt";
         Map<String, PasswordEncoder> encoders = new HashMap<>();
         encoders.put(encodingId, new BCryptPasswordEncoder());
+        // Soporta hashes antiguos generados con el identificador "null"
+        encoders.put("null", new BCryptPasswordEncoder());
 
         DelegatingPasswordEncoder delegatingPasswordEncoder =
                 new DelegatingPasswordEncoder(encodingId, encoders);
