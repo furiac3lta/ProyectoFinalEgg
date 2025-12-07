@@ -2,6 +2,7 @@ package com.egg.proyectoFinal.services.impl;
 
 import com.egg.proyectoFinal.entities.Orden;
 import com.egg.proyectoFinal.entities.Persona;
+import com.egg.proyectoFinal.enums.EstadoOrden;
 import com.egg.proyectoFinal.repositories.OrdenRepository;
 import com.egg.proyectoFinal.services.OrdenServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +101,7 @@ public class OrdenServiceImpl implements OrdenServices {
         return ordenRepository.findById(id).map(ordenPersistida -> {
             ordenPersistida.setFinishedAt(new Date());
             ordenPersistida.setActivo(false);
-            ordenPersistida.setEstado("FINALIZADA");
+            ordenPersistida.setEstado(EstadoOrden.FINALIZADA);
             return ordenRepository.save(ordenPersistida);
         }).orElse(null);
     }
@@ -109,7 +110,7 @@ public class OrdenServiceImpl implements OrdenServices {
     @Transactional
     public Orden aceptar(Long id) {
         return ordenRepository.findById(id).map(ordenPersistida -> {
-            ordenPersistida.setEstado("ACEPTADA");
+            ordenPersistida.setEstado(EstadoOrden.ACEPTADA);
             return ordenRepository.save(ordenPersistida);
         }).orElse(null);
     }
@@ -120,7 +121,7 @@ public class OrdenServiceImpl implements OrdenServices {
         return ordenRepository.findById(id).map(ordenPersistida -> {
             ordenPersistida.setFinishedAt(new Date());
             ordenPersistida.setActivo(false);
-            ordenPersistida.setEstado("RECHAZADA");
+            ordenPersistida.setEstado(EstadoOrden.RECHAZADA);
             return ordenRepository.save(ordenPersistida);
         }).orElse(null);
     }

@@ -1,5 +1,6 @@
 package com.egg.proyectoFinal.entities;
 
+import com.egg.proyectoFinal.enums.EstadoOrden;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,7 +21,8 @@ public class Orden extends BaseEntity{
 
     private String emailp;
 
-    private String estado = "PENDIENTE";
+    @Enumerated(EnumType.STRING)
+    private EstadoOrden estado = EstadoOrden.PENDIENTE;
 
     @OneToOne
     private Persona prestador;
