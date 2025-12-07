@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,5 +89,15 @@ public class OrdenServiceImpl implements OrdenServices {
     @Override
     public List<Orden> findByEmailP(String email) {
         return ordenRepository.findByEmailP(email);
+    }
+
+    @Override
+    @Transactional
+    public Orden finalizar(Long id) {
+        return ordenRepository.findById(id).map(ordenPersistida -> {
+            ordenPersistida.setFinishedAt(new Date());
+            ordenPersistida.setActivo(false);
+            return ordenRepository.save(ordenPersistida);
+        }).orElse(null);
     }
 }
