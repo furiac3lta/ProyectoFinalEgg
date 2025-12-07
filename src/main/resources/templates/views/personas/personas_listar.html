@@ -27,6 +27,8 @@
                       <th>Apellido</th>
                       <th>email</th>
                       <th>telefono <i class="fa fa-sort"></i></th>
+                      <th>provincia</th>
+                      <th>localidad</th>
                       <th>oficio</th>
                       <th>Estado</th>
                       <th>Acciones</th>
@@ -40,6 +42,8 @@
                           <td th:text="${persona.apellido}"></td>
                           <td th:text="${persona.email}"></td>
                           <td th:text="${persona.telefono}"></td>
+                          <td th:text="${persona.provincia}"></td>
+                          <td th:text="${persona.localidad}"></td>
                           <td th:text="${persona.servicio}"></td>
                           <td th:text="${persona.activo} ? 'Activo' : 'Baja'"></td>
                           <td>
