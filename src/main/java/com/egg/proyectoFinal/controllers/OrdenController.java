@@ -146,9 +146,12 @@ public class OrdenController {
         }
 
         String username = authentication != null ? authentication.getName() : null;
+        Persona solicitante = username != null ? personaService.findByEmail(username) : null;
+        boolean esAdmin = solicitante != null && solicitante.getRol() == Rol.ADMIN;
         boolean esCliente = username != null && username.equals(orden.getEmailc());
+        boolean esPrestador = username != null && username.equals(orden.getEmailp());
 
-        if (!esCliente) {
+        if (!esCliente && !esPrestador && !esAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
