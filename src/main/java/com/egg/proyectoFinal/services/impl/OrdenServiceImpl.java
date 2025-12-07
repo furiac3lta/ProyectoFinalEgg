@@ -113,4 +113,15 @@ public class OrdenServiceImpl implements OrdenServices {
             return ordenRepository.save(ordenPersistida);
         }).orElse(null);
     }
+
+    @Override
+    @Transactional
+    public Orden rechazar(Long id) {
+        return ordenRepository.findById(id).map(ordenPersistida -> {
+            ordenPersistida.setFinishedAt(new Date());
+            ordenPersistida.setActivo(false);
+            ordenPersistida.setEstado("RECHAZADA");
+            return ordenRepository.save(ordenPersistida);
+        }).orElse(null);
+    }
 }

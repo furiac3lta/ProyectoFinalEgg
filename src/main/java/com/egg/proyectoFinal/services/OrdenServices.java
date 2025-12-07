@@ -19,4 +19,6 @@ public interface OrdenServices {
     Orden finalizar(Long id);
 
     Orden aceptar(Long id);
+
+    Orden rechazar(Long id);
 }
