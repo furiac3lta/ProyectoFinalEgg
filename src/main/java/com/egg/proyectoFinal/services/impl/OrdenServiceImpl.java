@@ -1,7 +1,7 @@
 package com.egg.proyectoFinal.services.impl;
 
 import com.egg.proyectoFinal.entities.Orden;
-import com.egg.proyectoFinal.entities.Persona;
+import com.egg.proyectoFinal.enums.EstadoOrden;
 import com.egg.proyectoFinal.repositories.OrdenRepository;
 import com.egg.proyectoFinal.services.OrdenServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +34,7 @@ public class OrdenServiceImpl implements OrdenServices {
     @Transactional
     public Orden update(Orden orden, Long id) {
         return ordenRepository.findById(id).map(ordenPersistida -> {
+
             if (orden.getDetalle() != null) {
                 ordenPersistida.setDetalle(orden.getDetalle());
             }
@@ -44,7 +45,7 @@ public class OrdenServiceImpl implements OrdenServices {
                 ordenPersistida.setEmailp(orden.getEmailp());
             }
             if (orden.getEstado() != null) {
-                ordenPersistida.setEstado(orden.getEstado());
+                ordenPersistida.setEstado(orden.getEstado()); // ENUM
             }
             if (orden.getPrestador() != null) {
                 ordenPersistida.setPrestador(orden.getPrestador());
@@ -67,11 +68,15 @@ public class OrdenServiceImpl implements OrdenServices {
     @Transactional
     public void delete(Orden orden, Long id) {
         try {
-            Optional<Orden> ordenOptional = ordenRepository.findById(id);
-            Orden ordenUpdate = ordenOptional.get();
-            ordenUpdate.setActivo(false);
-            ordenRepository.save(ordenUpdate);
-        }catch(Exception e){
+            Optional<Orden> optional = ordenRepository.findById(id);
+
+            if (optional.isPresent()) {
+                Orden ordenUpdate = optional.get();
+                ordenUpdate.setActivo(false);
+                ordenRepository.save(ordenUpdate);
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -90,9 +95,14 @@ public class OrdenServiceImpl implements OrdenServices {
     }
 
     @Override
+    @Transactional
     public List<Orden> findByEmailP(String email) {
         return ordenRepository.findByEmailP(email);
     }
+
+    // ============================
+    // ESTADOS DE ORDEN
+    // ============================
 
     @Override
     @Transactional
@@ -100,7 +110,7 @@ public class OrdenServiceImpl implements OrdenServices {
         return ordenRepository.findById(id).map(ordenPersistida -> {
             ordenPersistida.setFinishedAt(new Date());
             ordenPersistida.setActivo(false);
-            ordenPersistida.setEstado("FINALIZADA");
+            ordenPersistida.setEstado(EstadoOrden.FINALIZADA);
             return ordenRepository.save(ordenPersistida);
         }).orElse(null);
     }
@@ -109,7 +119,7 @@ public class OrdenServiceImpl implements OrdenServices {
     @Transactional
     public Orden aceptar(Long id) {
         return ordenRepository.findById(id).map(ordenPersistida -> {
-            ordenPersistida.setEstado("ACEPTADA");
+            ordenPersistida.setEstado(EstadoOrden.ACEPTADA);
             return ordenRepository.save(ordenPersistida);
         }).orElse(null);
     }
@@ -120,7 +130,7 @@ public class OrdenServiceImpl implements OrdenServices {
         return ordenRepository.findById(id).map(ordenPersistida -> {
             ordenPersistida.setFinishedAt(new Date());
             ordenPersistida.setActivo(false);
-            ordenPersistida.setEstado("RECHAZADA");
+            ordenPersistida.setEstado(EstadoOrden.RECHAZADA);
             return ordenRepository.save(ordenPersistida);
         }).orElse(null);
     }
