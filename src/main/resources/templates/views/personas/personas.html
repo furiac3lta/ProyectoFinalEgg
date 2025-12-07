@@ -19,8 +19,6 @@
         <div class="description">
             <h3 th:text="${persona.nombre}+ ' ' + ${persona.apellido}"></h3>
             <h4 th:text="${persona.servicio}"></h4>
-            <h5 sec:authorize="isAuthenticated()" th:text="${persona.email}"></h5>
-            <h5 sec:authorize="isAuthenticated()" th:text="${persona.telefono}"></h5>
             <h5 class="h7">
                 <a th:href="@{/views/personas/detalle/}+${persona.id}" class="view" title="View"
                    data-toggle="tooltip"><i class="fa-solid fa-glasses"></i></a>

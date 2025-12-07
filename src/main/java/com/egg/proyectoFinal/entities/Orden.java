@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+
 @Entity
 @Getter
 @Setter
@@ -15,11 +16,17 @@ public class Orden extends BaseEntity {
 
     private String detalle;
 
-    @ManyToOne
-    private Persona solicitante;   // <--- CLIENTE (GUEST)
+    // Email del cliente solicitante (se usa para preservar privacidad al exponer datos)
+    private String emailc;
+
+    // Email del prestador del servicio
+    private String emailp;
 
     @ManyToOne
-    private Persona prestador;     // <--- PROVEEDOR (USER)
+    private Persona solicitante;   // <--- CLIENTE real (relación interna)
+
+    @ManyToOne
+    private Persona prestador;     // <--- PRESTADOR real (relación interna)
 
     @Enumerated(EnumType.STRING)
     private EstadoOrden estado = EstadoOrden.PENDIENTE;
