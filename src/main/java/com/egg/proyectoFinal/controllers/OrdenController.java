@@ -2,12 +2,15 @@ package com.egg.proyectoFinal.controllers;
 
 import com.egg.proyectoFinal.entities.Orden;
 import com.egg.proyectoFinal.entities.Persona;
+import com.egg.proyectoFinal.enums.Rol;
 import com.egg.proyectoFinal.services.impl.OrdenServiceImpl;
 import com.egg.proyectoFinal.services.impl.PersonaServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -56,6 +59,15 @@ public class OrdenController {
         if (persona == null) {
             return ResponseEntity.notFound().build();
         }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Persona solicitante = personaService.findByEmail(authentication.getName());
+            if (solicitante != null) {
+                orden.setEmailc(solicitante.getEmail());
+            }
+        }
+
         orden.setPrestador(persona);
         orden.setEmailp(persona.getEmail());
         Orden creada = ordenService.create(orden);
@@ -81,5 +93,26 @@ public class OrdenController {
         }
         ordenService.delete(new Orden(), id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/finalizar")
+    @PreAuthorize("hasAnyRole('ADMIN','USER','GUEST')")
+    public ResponseEntity<Orden> finalizar(@PathVariable("id") Long id, Authentication authentication) {
+        Orden orden = ordenService.findById(id);
+        if (orden == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String username = authentication != null ? authentication.getName() : null;
+        Persona solicitante = username != null ? personaService.findByEmail(username) : null;
+        boolean esAdmin = solicitante != null && solicitante.getRol() == Rol.ADMIN;
+        boolean esCliente = username != null && username.equals(orden.getEmailc());
+
+        if (!esAdmin && !esCliente) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        Orden finalizada = ordenService.finalizar(id);
+        return ResponseEntity.ok(finalizada);
     }
 }
