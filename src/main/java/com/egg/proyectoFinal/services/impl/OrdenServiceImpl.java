@@ -43,6 +43,9 @@ public class OrdenServiceImpl implements OrdenServices {
             if (orden.getEmailp() != null) {
                 ordenPersistida.setEmailp(orden.getEmailp());
             }
+            if (orden.getEstado() != null) {
+                ordenPersistida.setEstado(orden.getEstado());
+            }
             if (orden.getPrestador() != null) {
                 ordenPersistida.setPrestador(orden.getPrestador());
             }
@@ -97,6 +100,16 @@ public class OrdenServiceImpl implements OrdenServices {
         return ordenRepository.findById(id).map(ordenPersistida -> {
             ordenPersistida.setFinishedAt(new Date());
             ordenPersistida.setActivo(false);
+            ordenPersistida.setEstado("FINALIZADA");
+            return ordenRepository.save(ordenPersistida);
+        }).orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public Orden aceptar(Long id) {
+        return ordenRepository.findById(id).map(ordenPersistida -> {
+            ordenPersistida.setEstado("ACEPTADA");
             return ordenRepository.save(ordenPersistida);
         }).orElse(null);
     }

@@ -95,6 +95,27 @@ public class OrdenController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}/aceptar")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    public ResponseEntity<Orden> aceptar(@PathVariable("id") Long id, Authentication authentication) {
+        Orden orden = ordenService.findById(id);
+        if (orden == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String username = authentication != null ? authentication.getName() : null;
+        Persona solicitante = username != null ? personaService.findByEmail(username) : null;
+        boolean esAdmin = solicitante != null && solicitante.getRol() == Rol.ADMIN;
+        boolean esPrestador = username != null && username.equals(orden.getEmailp());
+
+        if (!esAdmin && !esPrestador) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        Orden aceptada = ordenService.aceptar(id);
+        return ResponseEntity.ok(aceptada);
+    }
+
     @PutMapping("/{id}/finalizar")
     @PreAuthorize("hasAnyRole('ADMIN','USER','GUEST')")
     public ResponseEntity<Orden> finalizar(@PathVariable("id") Long id, Authentication authentication) {

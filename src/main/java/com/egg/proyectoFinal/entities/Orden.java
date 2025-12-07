@@ -20,6 +20,8 @@ public class Orden extends BaseEntity{
 
     private String emailp;
 
+    private String estado = "PENDIENTE";
+
     @OneToOne
     private Persona prestador;
 
@@ -30,6 +32,6 @@ public class Orden extends BaseEntity{
     private Date createdAt = new Date();
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date finishedAt = new Date();
+    private Date finishedAt;
 
 }
