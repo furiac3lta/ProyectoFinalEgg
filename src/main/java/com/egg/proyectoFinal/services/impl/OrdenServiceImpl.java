@@ -99,6 +99,9 @@ public class OrdenServiceImpl implements OrdenServices {
     @Transactional
     public Orden finalizar(Long id) {
         return ordenRepository.findById(id).map(ordenPersistida -> {
+            if (isEstadoFinal(ordenPersistida)) {
+                return ordenPersistida;
+            }
             ordenPersistida.setFinishedAt(new Date());
             ordenPersistida.setActivo(false);
             ordenPersistida.setEstado(EstadoOrden.FINALIZADA);
@@ -110,6 +113,9 @@ public class OrdenServiceImpl implements OrdenServices {
     @Transactional
     public Orden aceptar(Long id) {
         return ordenRepository.findById(id).map(ordenPersistida -> {
+            if (isEstadoFinal(ordenPersistida)) {
+                return ordenPersistida;
+            }
             ordenPersistida.setEstado(EstadoOrden.ACEPTADA);
             return ordenRepository.save(ordenPersistida);
         }).orElse(null);
@@ -119,10 +125,17 @@ public class OrdenServiceImpl implements OrdenServices {
     @Transactional
     public Orden rechazar(Long id) {
         return ordenRepository.findById(id).map(ordenPersistida -> {
+            if (isEstadoFinal(ordenPersistida)) {
+                return ordenPersistida;
+            }
             ordenPersistida.setFinishedAt(new Date());
             ordenPersistida.setActivo(false);
             ordenPersistida.setEstado(EstadoOrden.RECHAZADA);
             return ordenRepository.save(ordenPersistida);
         }).orElse(null);
+    }
+
+    private boolean isEstadoFinal(Orden orden) {
+        return orden.getEstado() == EstadoOrden.FINALIZADA || orden.getEstado() == EstadoOrden.RECHAZADA;
     }
 }

@@ -2,6 +2,7 @@ package com.egg.proyectoFinal.controllers;
 
 import com.egg.proyectoFinal.entities.Orden;
 import com.egg.proyectoFinal.entities.Persona;
+import com.egg.proyectoFinal.enums.EstadoOrden;
 import com.egg.proyectoFinal.enums.Rol;
 import com.egg.proyectoFinal.services.impl.OrdenServiceImpl;
 import com.egg.proyectoFinal.services.impl.PersonaServiceImpl;
@@ -112,6 +113,10 @@ public class OrdenController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
+        if (orden.getEstado() == EstadoOrden.FINALIZADA || orden.getEstado() == EstadoOrden.RECHAZADA) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(orden);
+        }
+
         Orden aceptada = ordenService.aceptar(id);
         return ResponseEntity.ok(aceptada);
     }
@@ -131,6 +136,10 @@ public class OrdenController {
 
         if (!esAdmin && !esCliente) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        if (orden.getEstado() == EstadoOrden.FINALIZADA || orden.getEstado() == EstadoOrden.RECHAZADA) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(orden);
         }
 
         Orden finalizada = ordenService.finalizar(id);
@@ -153,6 +162,10 @@ public class OrdenController {
 
         if (!esCliente && !esPrestador && !esAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        if (orden.getEstado() == EstadoOrden.FINALIZADA || orden.getEstado() == EstadoOrden.RECHAZADA) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(orden);
         }
 
         Orden rechazada = ordenService.rechazar(id);
