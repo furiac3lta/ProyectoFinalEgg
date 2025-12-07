@@ -136,4 +136,23 @@ public class OrdenController {
         Orden finalizada = ordenService.finalizar(id);
         return ResponseEntity.ok(finalizada);
     }
+
+    @PutMapping("/{id}/rechazar")
+    @PreAuthorize("hasAnyRole('ADMIN','USER','GUEST')")
+    public ResponseEntity<Orden> rechazar(@PathVariable("id") Long id, Authentication authentication) {
+        Orden orden = ordenService.findById(id);
+        if (orden == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String username = authentication != null ? authentication.getName() : null;
+        boolean esCliente = username != null && username.equals(orden.getEmailc());
+
+        if (!esCliente) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        Orden rechazada = ordenService.rechazar(id);
+        return ResponseEntity.ok(rechazada);
+    }
 }
