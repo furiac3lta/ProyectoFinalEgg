@@ -32,14 +32,31 @@ public class OrdenServiceImpl implements OrdenServices {
     @Override
     @Transactional
     public Orden update(Orden orden, Long id) {
-        try {
-            Orden ordenOptional = ordenRepository.findById(id).get();
-            ordenOptional = ordenRepository.save(orden);
-            return ordenOptional;
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
-        }
+        return ordenRepository.findById(id).map(ordenPersistida -> {
+            if (orden.getDetalle() != null) {
+                ordenPersistida.setDetalle(orden.getDetalle());
+            }
+            if (orden.getEmailc() != null) {
+                ordenPersistida.setEmailc(orden.getEmailc());
+            }
+            if (orden.getEmailp() != null) {
+                ordenPersistida.setEmailp(orden.getEmailp());
+            }
+            if (orden.getPrestador() != null) {
+                ordenPersistida.setPrestador(orden.getPrestador());
+            }
+            if (orden.getActivo() != null) {
+                ordenPersistida.setActivo(orden.getActivo());
+            }
+            if (orden.getCreatedAt() != null) {
+                ordenPersistida.setCreatedAt(orden.getCreatedAt());
+            }
+            if (orden.getFinishedAt() != null) {
+                ordenPersistida.setFinishedAt(orden.getFinishedAt());
+            }
+
+            return ordenRepository.save(ordenPersistida);
+        }).orElse(null);
     }
 
     @Override
@@ -59,7 +76,7 @@ public class OrdenServiceImpl implements OrdenServices {
     @Transactional
     public Orden findById(Long id) {
         Optional<Orden> opt = ordenRepository.findById(id);
-        return opt.get();
+        return opt.orElse(null);
     }
 
     @Override
