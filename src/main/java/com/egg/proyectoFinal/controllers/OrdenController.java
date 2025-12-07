@@ -2,12 +2,15 @@ package com.egg.proyectoFinal.controllers;
 
 import com.egg.proyectoFinal.entities.Orden;
 import com.egg.proyectoFinal.entities.Persona;
+import com.egg.proyectoFinal.enums.EstadoOrden;
 import com.egg.proyectoFinal.services.impl.OrdenServiceImpl;
 import com.egg.proyectoFinal.services.impl.PersonaServiceImpl;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -49,17 +52,40 @@ public class OrdenController {
         return orden.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/persona/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER', 'GUEST')")
-    public ResponseEntity<Orden> crear(@PathVariable Long id, @Valid @RequestBody Orden orden) {
-        Persona persona = personaService.findById(id);
-        if (persona == null) {
-            return ResponseEntity.notFound().build();
-        }
-        orden.setPrestador(persona);
-        orden.setEmailp(persona.getEmail());
+    @PostMapping("/persona/{idProveedor}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER','GUEST')")
+    public ResponseEntity<Orden> crear(@PathVariable Long idProveedor,
+                                       @RequestBody Orden orden,
+                                       Authentication auth) {
+
+        Persona proveedor = personaService.findById(idProveedor);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Persona solicitante = personaService.findByEmail(email);
+
+
+        orden.setPrestador(proveedor);
+        orden.setSolicitante(solicitante);
+        orden.setEstado(EstadoOrden.PENDIENTE);
+
         Orden creada = ordenService.create(orden);
         return new ResponseEntity<>(creada, HttpStatus.CREATED);
+    }
+    @PutMapping("/{id}/aceptar")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<Orden> aceptar(@PathVariable Long id) {
+
+        Orden orden = ordenService.findById(id);
+        orden.setEstado(EstadoOrden.ACEPTADA);
+        orden.setFinishedAt(null);
+        return ResponseEntity.ok(ordenService.create(orden));
+    }
+    @PutMapping("/{id}/rechazar")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<Orden> rechazar(@PathVariable Long id) {
+
+        Orden orden = ordenService.findById(id);
+        orden.setEstado(EstadoOrden.RECHAZADA);
+        return ResponseEntity.ok(ordenService.create(orden));
     }
 
     @PutMapping("/{id}")
