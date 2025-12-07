@@ -31,6 +31,12 @@ public class Persona extends BaseEntity{
     @NotNull
     private Long telefono;
 
+    @NotEmpty
+    private String provincia;
+
+    @NotEmpty
+    private String localidad;
+
     private String foto;
 
     private Boolean activo = true;
@@ -70,6 +76,14 @@ public class Persona extends BaseEntity{
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
     }
 
     public void setActivo(Boolean activo) {

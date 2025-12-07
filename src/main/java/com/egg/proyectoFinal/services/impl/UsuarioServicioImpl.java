@@ -60,6 +60,8 @@ public class UsuarioServicioImpl implements UserDetailsService {
         personaEdit.setNombre(persona.getNombre());
         personaEdit.setApellido(persona.getApellido());
         personaEdit.setEmail(persona.getEmail());
+        personaEdit.setProvincia(persona.getProvincia());
+        personaEdit.setLocalidad(persona.getLocalidad());
         personaEdit.setServicio(persona.getServicio());
         personaEdit.setFoto(persona.getFoto());
 
