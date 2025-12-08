@@ -103,6 +103,8 @@
                                <i class="fa-solid fa-screwdriver-wrench"></i>  <span>  Servicio: </span> <span th:text="${persona.servicio.tipo}"></span> <hr>
                                <i class="fa-solid fa-envelope"></i>  <span>  Email: </span><span sec:authorize="isAuthenticated()" th:text="${persona.email}"  > </span> <hr>
                                <i class="fa-solid fa-phone"></i> <span>  Telefono:</span> <span sec:authorize="isAuthenticated()" th:text="${persona.telefono}"></span> <hr>
+                               <i class="fa-solid fa-location-dot"></i> <span> Provincia:</span> <span th:text="${persona.provincia}"></span> <hr>
+                               <i class="fa-solid fa-location-dot"></i> <span> Localidad:</span> <span th:text="${persona.localidad}"></span> <hr>
                                <i class="fa-solid fa-calendar-days"></i> <span>  Fecha de creación de perfil: </span> <span th:text="${persona.createdAt}"></span> <hr>
                                <i class="fa-solid fa-calendar-days"></i>  <span> Fecha de modificación de perfil: </span>  <span th:text="${persona.updatedAt}"></span> <hr>
                                <p class="card-text">

@@ -102,11 +102,11 @@ public class ListarOrdenesPdf extends AbstractPdfView {
             celda.setPadding(5);
             tablaOrdenes.addCell(celda);
 
-            celda = new PdfPCell(new Phrase(orden.getEmailc(), fuenteDataCeldas));
+            celda = new PdfPCell(new Phrase(orden.getSolicitante().getEmail(), fuenteDataCeldas));
             celda.setPadding(5);
             tablaOrdenes.addCell(celda);
 
-            celda = new PdfPCell(new Phrase(orden.getEmailp(), fuenteDataCeldas));
+            celda = new PdfPCell(new Phrase(orden.getPrestador().getEmail(), fuenteDataCeldas));
             celda.setPadding(5);
             tablaOrdenes.addCell(celda);
 

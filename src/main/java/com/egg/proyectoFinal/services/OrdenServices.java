@@ -15,4 +15,10 @@ public interface OrdenServices {
     List<Orden> findByEmailC(String email);
 
     List<Orden> findByEmailP(String email);
+
+    Orden finalizar(Long id);
+
+    Orden aceptar(Long id);
+
+    Orden rechazar(Long id);
 }

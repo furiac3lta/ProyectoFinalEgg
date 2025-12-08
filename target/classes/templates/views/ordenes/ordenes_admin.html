@@ -30,6 +30,7 @@
                         <th>Detalle</th>
                         <th>Email Cliente</th>
                         <th>Email Prestador</th>
+                        <th>Estado</th>
                         <th>Trabajo Activo</th>
                         <th>Fecha</th>
                         <th>Acciones</th>
@@ -44,6 +45,7 @@
                       <td th:text="${orden.detalle}"></td>
                       <td th:text="${orden.emailc}"></td>
                       <td th:text="${orden.emailp}"></td>
+                        <td th:text="${orden.estado}"></td>
                         <td th:text="${orden.activo} ? 'Activo' : 'Finalizado'"></td>
                         <td th:text="${orden.createdAt}"></td>
                       <td>
